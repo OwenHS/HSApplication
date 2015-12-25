@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$/HSHttpAnnotationLib" />
             <option value="$PROJECT_DIR$/LogSystemLib" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/hshttpannotationlib" />
           </set>
         </option>
       </GradleProjectSettings>

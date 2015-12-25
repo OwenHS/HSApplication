@@ -3,12 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HSApplication.iml" filepath="$PROJECT_DIR$/HSApplication.iml" />
-      <module fileurl="file://$PROJECT_DIR$/HSApplication.iml" filepath="$PROJECT_DIR$/HSApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/HSBaseLib/HSBaseLib.iml" filepath="$PROJECT_DIR$/HSBaseLib/HSBaseLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/HSHttpAnnotationLib/HSHttpAnnotationLib.iml" filepath="$PROJECT_DIR$/HSHttpAnnotationLib/HSHttpAnnotationLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/LogSystemLib/LogSystemLib.iml" filepath="$PROJECT_DIR$/LogSystemLib/LogSystemLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/HSHttpAnnotationLib/hshttpannotationlib.iml" filepath="$PROJECT_DIR$/HSHttpAnnotationLib/hshttpannotationlib.iml" />
     </modules>
   </component>
 </project>

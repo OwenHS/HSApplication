@@ -1,1 +1,1 @@
-include ':app', ':HSBaseLib', ':LogSystemLib', ':HSHttpAnnotationLib', ':hshttpannotationlib'
+include ':app', ':HSBaseLib', ':LogSystemLib', ':HSHttpAnnotationLib'
