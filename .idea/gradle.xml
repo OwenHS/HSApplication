@@ -9,8 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/HSAnnotationLib" />
             <option value="$PROJECT_DIR$/HSBaseLib" />
-            <option value="$PROJECT_DIR$/HSHttpAnnotationLib" />
             <option value="$PROJECT_DIR$/LogSystemLib" />
             <option value="$PROJECT_DIR$/app" />
           </set>
