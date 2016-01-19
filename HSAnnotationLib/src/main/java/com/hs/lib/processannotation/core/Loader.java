@@ -1,5 +1,6 @@
 package com.hs.lib.processannotation.core;
 
+import com.hs.lib.processannotation.core.adapter.ModuleAdapter;
 import com.hs.lib.processannotation.core.internal.Memoizer;
 
 import java.lang.reflect.AccessibleObject;
@@ -44,10 +45,13 @@ public abstract class Loader {
 //     */
 //    public abstract StaticInjection getStaticInjection(Class<?> injectedClass);
 
+    //抽象类，用来获取包容Module的新对象
+    public abstract <T> ModuleAdapter<T> getModuleAdapter(Class<T> moduleClass);
+
     /**
      * 用来缓存被初始化过的对象，是一个嵌套的 Memoizer 结构，
      * 简单理解就是嵌套的 HashMap，第一层 Key 是 ClassLoader，第二层 Key 是 ClassName，Value 是 Class 对象。
-     *
+     * <p/>
      * 其实对于编译时注解就是这块比运行时要快，直接使用缓存里已经加载到jvm中的类
      */
     protected Class<?> loadClass(ClassLoader classLoader, String name) {
@@ -76,4 +80,5 @@ public abstract class Loader {
         }
     }
 
+    public abstract <T> T getAtInjectNode(String className, ClassLoader classLoader);
 }

@@ -6,12 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 提供依赖注入模块标识的注解
- * Created by owen on 15-12-24.
+ * Created by owen on 16-1-19.
  */
 @Retention(RetentionPolicy.CLASS)
-@Target(ElementType.TYPE)
-public @interface Module {
-    //用于存放需要注入的Inject
-    Class<?>[] objectInjects() default{ };
+@Target(ElementType.METHOD)
+public @interface Singleton {
+    boolean isSingle() default true;
 }

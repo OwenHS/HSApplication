@@ -4,6 +4,7 @@ import com.hs.lib.processannotation.core.Loader;
 import com.hs.lib.processannotation.core.adapter.GeneratedAdapters;
 import com.hs.lib.processannotation.core.adapter.ModuleAdapter;
 import com.hs.lib.processannotation.core.internal.Memoizer;
+import com.hs.lib.processannotation.node.Node;
 
 /**
  * Created by owen on 16-1-4.
@@ -24,4 +25,16 @@ public class DefaultLoader extends Loader{
                     return result;
                 }
             };
+
+
+    @Override
+    public <T> ModuleAdapter<T> getModuleAdapter(Class<T> moduleClass) {
+        return (ModuleAdapter<T>)loadedAdapters.get(moduleClass);
+    }
+
+    @Override
+    public Node<?> getAtInjectNode(String className ,ClassLoader classLoader) {
+        Node<?> injectClass = instantiate(className.concat(GeneratedAdapters.INJECT_ADAPTER_SUFFIX),classLoader);
+        return injectClass;
+    }
 }
