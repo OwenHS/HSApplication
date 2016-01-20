@@ -1,7 +1,5 @@
 package lib.hs.com.hsapplication;
 
-import android.widget.Toast;
-
 import com.hs.lib.processannotation.ObjectGraph;
 
 import lib.hs.com.hsbaselib.HSApplication;
@@ -21,12 +19,14 @@ public class HSExampleApplication extends HSApplication {
         super.onCreate();
 
         apiA = new ApiA();
-        apiB = new ApiB();
 
         ObjectGraph og = ObjectGraph.create(new ModuleA());
 
         og.inject(apiA);
-        og.inject(apiB);
-        Toast.makeText(HSExampleApplication.this, "sss = "+apiA.classA.name+"  "+apiB.classB.name, Toast.LENGTH_SHORT).show();
+        apiA.classA.name++;
+        int a1 = apiA.classA.name;
+        og.inject(apiA);
+        apiA.classA.name++;
+        int a2 = apiA.classA.name;
     }
 }

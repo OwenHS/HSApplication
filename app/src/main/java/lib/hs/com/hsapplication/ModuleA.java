@@ -2,6 +2,7 @@ package lib.hs.com.hsapplication;
 
 import com.hs.lib.processannotation.annotation.Module;
 import com.hs.lib.processannotation.annotation.ObjectProvider;
+import com.hs.lib.processannotation.annotation.Singleton;
 
 /**
  * Created by owen on 16-1-4.
@@ -12,8 +13,9 @@ import com.hs.lib.processannotation.annotation.ObjectProvider;
 public class ModuleA {
 
     @ObjectProvider
+    @Singleton
     public ClassA getModuleAInfo() {
-        return new ClassA("ModuleA");
+        return new ClassA(1);
     }
 
     @ObjectProvider
