@@ -114,7 +114,10 @@ public class HSModuleInfo {
         builder.append(" public void getNodes(NodeController nodeController, ")
                 .append(className).append(" module){\n");
         for (HSMethodInfo info : methodInfos) {
-            builder.append("nodeController.methodStringMap.put(\"");
+            builder.append("nodeController.addNode(\"");
+            if(info.getInjectName() != null && !"".equals(info.getInjectName().trim())){
+                builder.append(info.getInjectName()+"/");
+            }
             builder.append(info.getReturnType() + "\"");
             builder.append(",new " + getExtraFullName()).append(".").append(info.getClassName()).append("(module));\n");
         }

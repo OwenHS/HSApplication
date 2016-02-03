@@ -5,7 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/HSAnnotationLib/HSAnnotationLib.iml" filepath="$PROJECT_DIR$/HSAnnotationLib/HSAnnotationLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/HSApplication.iml" filepath="$PROJECT_DIR$/HSApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/HSBaseLib/HSBaseLib.iml" filepath="$PROJECT_DIR$/HSBaseLib/HSBaseLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HSHttpLib/HSHttpLib.iml" filepath="$PROJECT_DIR$/HSHttpLib/HSHttpLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/LogSystemLib/LogSystemLib.iml" filepath="$PROJECT_DIR$/LogSystemLib/LogSystemLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Retrofit2/Retrofit2.iml" filepath="$PROJECT_DIR$/Retrofit2/Retrofit2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

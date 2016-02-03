@@ -21,6 +21,10 @@ public class HSMethodInfo {
 
     private String fatherName;
 
+    private boolean isSingle = false;
+
+    private String injectName = "";
+
     public List<? extends VariableElement> getParams() {
         return params;
     }
@@ -57,10 +61,14 @@ public class HSMethodInfo {
     public void getInnerClassStr(StringBuilder builder){
         builder.append("public final static class ")
                 .append(getClassName())
-                .append(" extends Node<"+returnType+"> {\n\n");
+                .append(" extends Node<" + returnType + "> {\n\n");
         builder.append("private final " + fatherName + " module;\n\n");
 
         builder.append("public " + getClassName() + "(" + fatherName + " module) {\n");
+        if(isSingle()) {
+            builder.append("super(Node.SINGLETON);\n");
+        }
+
         builder.append("this.module = module;\n}");
 
         builder.append("@Override\n").append("public "+getReturnType()+" get() {\n");
@@ -69,5 +77,21 @@ public class HSMethodInfo {
 
     public void setFatherName(String fatherName) {
         this.fatherName = fatherName;
+    }
+
+    public boolean isSingle() {
+        return isSingle;
+    }
+
+    public void setIsSingle(boolean isSingle) {
+        this.isSingle = isSingle;
+    }
+
+    public String getInjectName() {
+        return injectName;
+    }
+
+    public void setInjectName(String injectName) {
+        this.injectName = injectName;
     }
 }

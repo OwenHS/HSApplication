@@ -1,7 +1,9 @@
 package com.hs.lib.processannotation.processor;
 
 import com.hs.lib.processannotation.annotation.Module;
+import com.hs.lib.processannotation.annotation.Named;
 import com.hs.lib.processannotation.annotation.ObjectProvider;
+import com.hs.lib.processannotation.annotation.Singleton;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -80,7 +82,7 @@ public class ModuleProcessor extends AbstractProcessor {
                         AnnotationValue action = null;
                         for( Map.Entry<? extends ExecutableElement, ? extends AnnotationValue> entry : am.getElementValues().entrySet() )
                         {
-                            if("objectInjects".equals(entry.getKey().getSimpleName().toString() ) )
+                            if("objectInjects".equals(entry.getKey().getSimpleName().toString()) )
                             {
                                 action = entry.getValue();
                                 break;
@@ -124,10 +126,21 @@ public class ModuleProcessor extends AbstractProcessor {
                     String methodName = methodElement.getSimpleName().toString();
 
                     HSMethodInfo methodInfo = new HSMethodInfo();
+
                     methodInfo.setMethodName(methodName);
                     methodInfo.setReturnType(retrunType);
                     methodInfo.setParams(params);
                     methodInfo.setFatherName(info.getClassName());
+
+                    Singleton singleton = methodElement.getAnnotation(Singleton.class);
+                    if(singleton != null && singleton.isSingle()) {
+                        methodInfo.setIsSingle(true);
+                    }
+
+                    Named named = methodElement.getAnnotation(Named.class);
+                    if(named != null){
+                        methodInfo.setInjectName(named.name());
+                    }
 
                     info.getMethodInfos().add(methodInfo);
                 }
@@ -152,7 +165,7 @@ public class ModuleProcessor extends AbstractProcessor {
 //            error(info.getElement(), "Unable to write injector for type %s: %s", info.getElement(), e.getMessage());
         }
 
-        return false ;
+        return true ;
     }
 
 

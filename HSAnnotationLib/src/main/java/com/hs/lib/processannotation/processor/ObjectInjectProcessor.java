@@ -1,5 +1,6 @@
 package com.hs.lib.processannotation.processor;
 
+import com.hs.lib.processannotation.annotation.Named;
 import com.hs.lib.processannotation.annotation.ObjectInject;
 
 import java.io.IOException;
@@ -43,11 +44,10 @@ public class ObjectInjectProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "onjectInjectProcessor");
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(ObjectInject.class);
         Map<String,HSInjectInfo> mElementMap = new LinkedHashMap<>();
         for (Element element : elements) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "onjectInjectProcessor");
             if(element.getKind() == ElementKind.FIELD) {
 
                 VariableElement variableElement = (VariableElement)element;
@@ -56,6 +56,8 @@ public class ObjectInjectProcessor extends AbstractProcessor {
                 PackageElement packageElement = elementUtils.getPackageOf(variableElement);
 
                 String qualifiedName = classElement.getQualifiedName().toString();
+
+                Named named = variableElement.getAnnotation(Named.class);
 
                 HSInjectInfo info = mElementMap.get(qualifiedName);
                 if(info == null) {
@@ -67,8 +69,12 @@ public class ObjectInjectProcessor extends AbstractProcessor {
                     mElementMap.put(qualifiedName,info);
                 }
                 HSInjectFieldInfo fieldInfo = new HSInjectFieldInfo();
+                if(named != null){
+                    fieldInfo.setInjectName(named.name());
+                }
                 String fieldType = variableElement.asType().toString();
                 String fieldValue = variableElement.getSimpleName().toString();
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "ssssssss = "+fieldValue);
                 fieldInfo.setFieldType(fieldType);
                 fieldInfo.setFieldValue(fieldValue);
                 fieldInfo.setClassName(qualifiedName);

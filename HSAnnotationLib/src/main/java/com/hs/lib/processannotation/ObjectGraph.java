@@ -77,7 +77,6 @@ public abstract class ObjectGraph {
             //获取的是新文件的对象
             String injectName = instance.getClass().getName();
             Node<T> injectObjectNode = (Node<T>)loadObjectInject(injectName,classLoader);
-//            ModuleAdapter<?> moduleAdapter = injectStringMap.get(injectName);
             injectObjectNode.attach(nodeController);
             injectObjectNode.injectMembers(instance);
             return instance;

@@ -20,7 +20,6 @@ public class HSInjectInfo {
 
     private TypeElement element;
 
-
     public ArrayList<HSInjectFieldInfo> getFieldInfos() {
         return fieldInfos;
     }
@@ -124,8 +123,11 @@ public class HSInjectInfo {
         builder.append("@Override\n public void attach(NodeController nodeController){\n\n");
         for(HSInjectFieldInfo info :fieldInfos) {
             builder.append("this.node").append(info.getFieldValue()).append(" = (Node<")
-                    .append(info.getFieldType()).append(">)nodeController.requestNode(\"")
-                    .append(info.getFieldType() + "\");");
+                    .append(info.getFieldType()).append(">)nodeController.requestNode(\"");
+            if(info.getInjectName() != null && !"".equals(info.getInjectName().trim())) {
+                builder.append(info.getInjectName()+"/");
+            }
+            builder.append(info.getFieldType() + "\");\n");
         }
 
         builder.append("\n}\n");
@@ -138,4 +140,5 @@ public class HSInjectInfo {
         }
 
     }
+
 }

@@ -11,7 +11,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/HSAnnotationLib" />
             <option value="$PROJECT_DIR$/HSBaseLib" />
+            <option value="$PROJECT_DIR$/HSHttpLib" />
             <option value="$PROJECT_DIR$/LogSystemLib" />
+            <option value="$PROJECT_DIR$/Retrofit2" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>

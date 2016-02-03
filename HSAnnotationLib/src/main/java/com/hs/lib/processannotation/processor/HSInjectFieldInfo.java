@@ -7,6 +7,7 @@ public class HSInjectFieldInfo {
     private String fieldType;
     private String fieldValue;
     private String className;
+    private String injectName;
 
     public String getFieldType() {
         return fieldType;
@@ -30,5 +31,13 @@ public class HSInjectFieldInfo {
 
     public void setClassName(String className) {
         this.className = className;
+    }
+
+    public String getInjectName() {
+        return injectName;
+    }
+
+    public void setInjectName(String injectName) {
+        this.injectName = injectName;
     }
 }

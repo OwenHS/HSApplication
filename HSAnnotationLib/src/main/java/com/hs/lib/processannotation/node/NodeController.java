@@ -14,5 +14,15 @@ public class NodeController {
         return methodStringMap.get(injectName);
     }
 
+    public void addNode(String nodeName ,Node<?> nodeValue) {
 
+        if(nodeValue.isSingle){
+            SingletonNode singletonNode = new SingletonNode();
+            singletonNode.setOrignNode(nodeValue);
+            singletonNode.setKeySingle(nodeName);
+            methodStringMap.put(nodeName,singletonNode);
+        }else{
+            methodStringMap.put(nodeName,nodeValue);
+        }
+    }
 }
