@@ -1,11 +1,5 @@
 package com.hs.hshttplib.util;
 
-import java.io.File;
-import java.security.MessageDigest;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
@@ -24,13 +18,15 @@ import android.net.Uri;
 import android.telephony.TelephonyManager;
 import android.view.inputmethod.InputMethodManager;
 
+import java.io.File;
+import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 /**
  * 系统信息工具包<br>
  * 
- * <b>创建时间</b> 2014-8-14
- * 
- * @author kymjs (https://github.com/kymjs)
- * @version 1.1
  */
 public final class SystemTool {
     /**

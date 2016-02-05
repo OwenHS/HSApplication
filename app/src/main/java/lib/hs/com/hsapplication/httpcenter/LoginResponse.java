@@ -1,4 +1,4 @@
-package lib.hs.com.hsapplication;
+package lib.hs.com.hsapplication.httpcenter;
 
 /**
  * Created by owen on 16-2-3.

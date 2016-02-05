@@ -1,4 +1,4 @@
-package lib.hs.com.hsapplication;
+package lib.hs.com.hsapplication.httpcenter;
 
 import com.hs.hshttplib.annotations.Get;
 import com.hs.hshttplib.annotations.Path;

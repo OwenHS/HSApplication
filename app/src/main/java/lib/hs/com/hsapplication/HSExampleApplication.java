@@ -1,15 +1,15 @@
 package lib.hs.com.hsapplication;
 
-import android.util.Log;
-
 import com.hs.hshttplib.HSHttp;
 import com.hs.hshttplib.HttpCallBack;
+import com.hs.hshttplib.titan.Titans;
+import com.hs.lib.processannotation.ObjectGraph;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.List;
 
+import lib.hs.com.hsapplication.config.AppApi;
+import lib.hs.com.hsapplication.config.AppConfig;
+import lib.hs.com.hsapplication.httpcenter.ILoginable;
 import lib.hs.com.hsbaselib.HSApplication;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,9 +30,17 @@ public class HSExampleApplication extends HSApplication {
     public void onCreate() {
         super.onCreate();
 
-        Itest test = null;
-        test = (Itest) Proxy.newProxyInstance(Itest.class.getClassLoader(), new Class<?>[] { Itest.class }, new TestFactory());
-        test.funTest();
+
+        AppApi appApi = new AppApi();
+        ObjectGraph graph = ObjectGraph.create(new AppConfig());
+        graph.inject(appApi);
+
+        Titans titans = appApi.titans;
+        int count = 0;
+        while(count ++ < 10){
+            titans.create(ILoginable.class).login("owen","123");
+        }
+//        titans.create(ILoginable.class).login("owen","123");
 
         HSHttp hsClient = new HSHttp();
         hsClient.get("http://www.baidu.com", new HttpCallBack() {
@@ -67,19 +75,5 @@ public class HSExampleApplication extends HSApplication {
 
             }
         });
-    }
-
-
-    private interface Itest {
-        public void funTest();
-    }
-
-    private class TestFactory implements InvocationHandler {
-
-        @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            Log.d("owen","invoke");
-            return null;
-        }
     }
 }

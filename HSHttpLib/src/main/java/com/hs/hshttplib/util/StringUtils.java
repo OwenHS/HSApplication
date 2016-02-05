@@ -10,11 +10,6 @@ import java.util.regex.Pattern;
 
 /**
  * 字符串操作工具包<br>
- * 
- * <b>创建时间</b> 2014-8-14
- * 
- * @author kymjs (https://github.com/kymjs)
- * @version 1.1
  */
 public class StringUtils {
     private final static Pattern emailer = Pattern
