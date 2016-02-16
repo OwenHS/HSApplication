@@ -43,7 +43,7 @@ public class Titans {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                         //当动态代理触发相应代码的时候调用
-                        loadMethodInfo(method,args);
+                        loadMethodInfo(method).invoke(args);
                         return null;
                     }
                 });
@@ -54,24 +54,22 @@ public class Titans {
     }
 
     /**
-     *  通过对相应方法的注解的解析，获得需要的信息,然后执行http的操作
+     * 通过对相应方法的注解的解析，获得需要的信息,然后执行http的操作
      *
      * @param method 需要load的方法名
-     * @param args   需要load的方法参数
      */
-    private void loadMethodInfo(Method method, Object[] args) {
+    private MethodHandler loadMethodInfo(Method method) {
 
-        MethodHandler methodManager = null;
+        MethodHandler methodHandler = null;
 
         synchronized (methodHandlerCache){
-            methodManager = methodHandlerCache.get(method);
-            if(methodManager == null){
-                methodManager = MethodHandler.create();
-                methodHandlerCache.put(method, methodManager);
+            methodHandler = methodHandlerCache.get(method);
+            if(methodHandler == null){
+                methodHandler = MethodHandler.create(method);
+                methodHandlerCache.put(method, methodHandler);
             }
         }
-
-        methodManager.invoke(args);
+        return methodHandler;
     }
 
 
