@@ -25,9 +25,15 @@ public class Titans {
     private LinkedHashMap<String, Object> proxyCache = new LinkedHashMap<>();
 
     //所有接口方法的缓存
-    private LinkedHashMap<Method,MethodHandler> methodHandlerCache = new LinkedHashMap();
+    private LinkedHashMap<Method, MethodHandler> methodHandlerCache = new LinkedHashMap();
 
-    private Titans() {
+    public GaiaHttp httpClient;
+
+    public String baseUrl;
+
+    private Titans(String baseUrl, GaiaHttp gaiaHttp) {
+        this.httpClient = gaiaHttp;
+        this.baseUrl = baseUrl;
     }
 
     //创建动态对象,proxyCache用来缓存动态代理生成的对象,重复创建对象
@@ -35,10 +41,10 @@ public class Titans {
         T t = null;
         String name = service.getName();
         synchronized (proxyCache) {
-            Log.d(TAG, "需要生成的对象名 ： "+name);
-            t = (T)proxyCache.get(name);
+            Log.d(TAG, "需要生成的对象名 ： " + name);
+            t = (T) proxyCache.get(name);
             if (t == null) {
-                Log.d(TAG, "缓存中不含有接口 "+name+" 的对象");
+                Log.d(TAG, "缓存中不含有接口 " + name + " 的对象");
                 t = (T) Proxy.newProxyInstance(service.getClassLoader(), new Class<?>[]{service}, new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -62,10 +68,10 @@ public class Titans {
 
         MethodHandler methodHandler = null;
 
-        synchronized (methodHandlerCache){
+        synchronized (methodHandlerCache) {
             methodHandler = methodHandlerCache.get(method);
-            if(methodHandler == null){
-                methodHandler = MethodHandler.create(method);
+            if (methodHandler == null) {
+                methodHandler = MethodHandler.create(method, this);
                 methodHandlerCache.put(method, methodHandler);
             }
         }
@@ -75,13 +81,32 @@ public class Titans {
 
     public static final class Builder {
 
+        //是一个接口用于代理所有可以用到的http
+        private GaiaHttp httpClient;
+        private String baseUrl = "";
+
         //建造者builder,用于初始化Titan的所有模块。
         public Builder() {
 
         }
 
-        public static Titans build() {
-            return new Titans();
+        public Titans build() {
+
+            if (httpClient == null) {
+                httpClient = new DefaultHSHttp();
+            }
+
+            return new Titans(baseUrl, httpClient);
+        }
+
+        public Builder setHttpClient(GaiaHttp httpClient) {
+            this.httpClient = httpClient;
+            return this;
+        }
+
+        public Builder setBaseUrl(String baseUrl) {
+            this.baseUrl = baseUrl;
+            return this;
         }
     }
 

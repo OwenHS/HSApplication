@@ -1,7 +1,5 @@
 package com.hs.hshttplib.titan;
 
-import android.util.Log;
-
 import java.lang.reflect.Method;
 
 /**
@@ -21,24 +19,32 @@ public class MethodHandler {
     private IHttplibable http;
 
     //请求接口的信息
-    private RequestMethodAnnotationInfo annotationInfo;
+    public RequestMethodInfo methodInfo;
 
-    private MethodHandler(RequestMethodAnnotationInfo annotationInfo) {
-        this.annotationInfo = annotationInfo;
+    private Titans titans;
+
+    private MethodHandler(RequestMethodInfo methodInfo, Titans titans) {
+        this.methodInfo = methodInfo;
+        this.titans = titans;
     }
 
-    //用于创建一个MethodHandler
-    public static MethodHandler create(Method method) {
-
-        RequestMethodAnnotationInfo methodAnnotationInfo = new RequestMethodAnnotationInfo();
-        methodAnnotationInfo.parse(method);
-
-        return new MethodHandler(methodAnnotationInfo);
+    /**
+     * 用于创建一个MethodHandler
+     * @param method  需要执行
+     * @param titans
+     * @return
+     */
+    public static MethodHandler create(Method method, Titans titans) {
+        RequestMethodInfo methodInfo = RequestMethodInfoFactory.parse(method);
+        if(titans.baseUrl != null){
+            methodInfo.url = titans.baseUrl + methodInfo.url;
+        }
+        return new MethodHandler(methodInfo,titans);
     }
 
     //用于执行此方法
     public void invoke(Object... args) {
-        Log.d(TAG, "动态代理方法执行");
+        titans.httpClient.invoke(args,this);
     }
 
 

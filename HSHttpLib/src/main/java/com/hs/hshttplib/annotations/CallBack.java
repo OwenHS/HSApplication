@@ -6,11 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Get方法注解
- * Created by owen on 16-2-3.
+ * Created by owen on 16-2-18.
  */
+
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface Get {
-    String value() default "";
+@Target(ElementType.PARAMETER)
+public @interface CallBack {
 }
