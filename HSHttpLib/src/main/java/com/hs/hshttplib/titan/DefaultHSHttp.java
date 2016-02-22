@@ -4,6 +4,9 @@ import com.hs.hshttplib.HSHttp;
 import com.hs.hshttplib.HttpCallBack;
 import com.hs.hshttplib.HttpParams;
 
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.Map;
 
 /**
@@ -34,8 +37,13 @@ public class DefaultHSHttp extends GaiaHttp<HSHttp, HttpParams, HttpCallBack> {
     }
 
     @Override
-    public void postJson(String url, HttpParams httpParams, HttpCallBack httpCallBack) {
-        httpClient.get(url, httpParams, httpCallBack);
+    public void postJson(String url, JSONObject jsonObject, HttpCallBack httpCallBack) {
+        httpClient.post(url, jsonObject, httpCallBack);
+    }
+
+    @Override
+    public void downFile(String url,File save,HttpCallBack httpCallBack) {
+        httpClient.download(url,save,httpCallBack);
     }
 
     @Override

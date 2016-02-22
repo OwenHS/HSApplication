@@ -36,6 +36,9 @@ public class MethodHandler {
      */
     public static MethodHandler create(Method method, Titans titans) {
         RequestMethodInfo methodInfo = RequestMethodInfoFactory.parse(method);
+        if(methodInfo == null){
+            return null;
+        }
         if(titans.baseUrl != null){
             methodInfo.url = titans.baseUrl + methodInfo.url;
         }

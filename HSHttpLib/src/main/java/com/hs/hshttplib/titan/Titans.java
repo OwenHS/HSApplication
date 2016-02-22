@@ -49,7 +49,10 @@ public class Titans {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                         //当动态代理触发相应代码的时候调用
-                        loadMethodInfo(method).invoke(args);
+                        MethodHandler handler = loadMethodInfo(method);
+                        if(handler != null){
+                            handler .invoke(args);
+                        }
                         return null;
                     }
                 });
@@ -72,6 +75,9 @@ public class Titans {
             methodHandler = methodHandlerCache.get(method);
             if (methodHandler == null) {
                 methodHandler = MethodHandler.create(method, this);
+                if(methodHandler == null){
+                    return null;
+                }
                 methodHandlerCache.put(method, methodHandler);
             }
         }

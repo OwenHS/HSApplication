@@ -1,8 +1,12 @@
 package com.hs.hshttplib.titan;
 
 import com.hs.hshttplib.annotations.CallBack;
+import com.hs.hshttplib.annotations.DownFile;
+import com.hs.hshttplib.annotations.DownUrl;
+import com.hs.hshttplib.annotations.FileContainer;
 import com.hs.hshttplib.annotations.Get;
 import com.hs.hshttplib.annotations.Param;
+import com.hs.hshttplib.annotations.ParamJson;
 import com.hs.hshttplib.annotations.Post;
 import com.hs.hshttplib.annotations.PostJson;
 import com.hs.hshttplib.annotations.Put;
@@ -23,7 +27,12 @@ public class RequestMethodInfoFactory {
     public static RequestMethodInfo parse(Method method) {
         RequestMethodInfo info = new RequestMethodInfo();
         parseAnnotation(info, method);
-        parseParams(info, method);
+        try {
+            parseParams(info, method);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
         return info;
     }
 
@@ -31,16 +40,18 @@ public class RequestMethodInfoFactory {
     private static void parseAnnotation(RequestMethodInfo info, Method method) {
 
         for (Annotation annotation : method.getAnnotations()) {
-            if(annotation instanceof Put){
+            if (annotation instanceof Put) {
                 info.url = ((Put) annotation).value();
                 info.requestMethod = RequestMethodInfo.GaiaMethod.Put;
-            }else if(annotation instanceof Post){
+            } else if (annotation instanceof Post) {
                 info.url = ((Post) annotation).value();
                 info.requestMethod = RequestMethodInfo.GaiaMethod.Post;
-            }else if(annotation instanceof PostJson){
+            } else if (annotation instanceof PostJson) {
                 info.url = ((PostJson) annotation).value();
                 info.requestMethod = RequestMethodInfo.GaiaMethod.PostJson;
-            }else{
+            } else if(annotation instanceof DownFile){
+                info.requestMethod = RequestMethodInfo.GaiaMethod.DownFile;
+            }else {
                 //默认的是get方法
                 info.url = ((Get) annotation).value();
                 info.requestMethod = RequestMethodInfo.GaiaMethod.Get;
@@ -49,22 +60,30 @@ public class RequestMethodInfoFactory {
     }
 
     //分析方法参数上注解的信息
-    private static void parseParams(RequestMethodInfo info, Method method) {
+    private static void parseParams(RequestMethodInfo info, Method method) throws Exception {
         Type[] methodTypes = method.getParameterTypes();
         Annotation[][] annotations = method.getParameterAnnotations();
 
         //用于存放数据的key值
-        HashMap<Integer,String> params_values = new HashMap<>();
+        HashMap<Integer, String> params_values = new HashMap<>();
 
         int count = methodTypes.length;
         for (int i = 0; i < count; i++) {
             //将包含Param标注的写入map中
-            for(Annotation annotation : annotations[i]){
-                if(annotation instanceof Param){
+            for (Annotation annotation : annotations[i]) {
+                if (annotation instanceof Param) {
+                    if (info.requestMethod == RequestMethodInfo.GaiaMethod.PostJson) {
+                        throw new Exception("PostJson Method donnot have Param ,must use ParamJson");
+                    }
                     params_values.put(i, ((Param) annotation).value());
-                }
-                else if(annotation instanceof CallBack){
+                } else if (annotation instanceof CallBack) {
                     info.callBackIndex = i;
+                } else if (annotation instanceof ParamJson) {
+                    info.jsonIndex = i;
+                } else if (annotation instanceof FileContainer){
+                    info.fileIndex = i;
+                } else if (annotation instanceof DownUrl){
+                    info.fileUrlIndex = i;
                 }
             }
         }

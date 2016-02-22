@@ -7,13 +7,21 @@ import java.util.HashMap;
  */
 public class RequestMethodInfo {
 
-    public enum GaiaMethod{Get,Put,Post,PostJson};
+    public enum GaiaMethod{Get,Put,Post,PostJson,DownFile};
 
-    public String url;
+    public String url = "";
 
     public int callBackIndex;
+
+    public int jsonIndex;
+
+    public int fileIndex;
+
+    public int fileUrlIndex;
 
     public GaiaMethod requestMethod;
 
     public HashMap<Integer,String> params_values;
+
+
 }

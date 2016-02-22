@@ -1,7 +1,8 @@
 package com.hs.hshttplib.titan;
 
-import android.util.Log;
+import org.json.JSONObject;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public abstract class GaiaHttp<T, J, K> {
     /**
      * 数据包装放到网上
      */
-    public J translateTo(Map<String, Object> paramsMap) {
+    public J translateTo(Map<String, String> paramsMap) {
         throw new UnsupportedOperationException("translateTo wrong");
     }
 
@@ -53,14 +54,12 @@ public abstract class GaiaHttp<T, J, K> {
 
     public void invoke(Object[] args, MethodHandler methodHandler) {
         RequestMethodInfo info = methodHandler.methodInfo;
-        HashMap<String, Object> paramsMap = new HashMap<>();
+        HashMap<String, String> paramsMap = new HashMap<>();
         for (int i = 0; i < args.length; i++) {
-            if (i != info.callBackIndex && info.params_values.get(i) != null) {
-                paramsMap.put(info.params_values.get(i), args[i]);
+            if (info.params_values != null && i != info.callBackIndex && info.params_values.get(i) != null) {
+                paramsMap.put(info.params_values.get(i), String.valueOf(args[i]));
             }
         }
-
-        Log.d("owen", "request url = " + info.url);
 
         if (info.requestMethod == RequestMethodInfo.GaiaMethod.Get) {
             get(info.url, translateTo(paramsMap), (K) args[info.callBackIndex]);
@@ -69,7 +68,9 @@ public abstract class GaiaHttp<T, J, K> {
         }else if(info.requestMethod == RequestMethodInfo.GaiaMethod.Put){
             put(info.url, translateTo(paramsMap), (K) args[info.callBackIndex]);
         }else if(info.requestMethod == RequestMethodInfo.GaiaMethod.PostJson){
-            postJson(info.url, translateTo(paramsMap), (K) args[info.callBackIndex]);
+            postJson(info.url, (JSONObject)args[info.jsonIndex], (K) args[info.callBackIndex]);
+        }else if(info.requestMethod == RequestMethodInfo.GaiaMethod.DownFile){
+            downFile((String) args[info.fileUrlIndex],(File) args[info.fileIndex],(K) args[info.callBackIndex]);
         }
     }
 
@@ -83,7 +84,11 @@ public abstract class GaiaHttp<T, J, K> {
 
     }
 
-    public void postJson(String url, J j, K k) {
+    public void postJson(String url, JSONObject jsonObject, K k) {
 
+    }
+
+    public void downFile(String url,File save,K k){
+        
     }
 }
