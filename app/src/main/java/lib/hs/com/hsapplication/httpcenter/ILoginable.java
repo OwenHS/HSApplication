@@ -5,10 +5,9 @@ import com.hs.hshttplib.annotations.CallBack;
 import com.hs.hshttplib.annotations.DownFile;
 import com.hs.hshttplib.annotations.DownUrl;
 import com.hs.hshttplib.annotations.FileContainer;
-import com.hs.hshttplib.annotations.ParamJson;
-import com.hs.hshttplib.annotations.PostJson;
-
-import org.json.JSONObject;
+import com.hs.hshttplib.annotations.Get;
+import com.hs.hshttplib.annotations.Param;
+import com.hs.hshttplib.titan.HSTestCallback;
 
 import java.io.File;
 
@@ -17,9 +16,12 @@ import java.io.File;
  * Created by owen on 16-2-3.
  */
 public interface ILoginable {
-    @PostJson("/update_jwd")
-    LoginResponse login(@ParamJson JSONObject aaa,
-                        @CallBack HttpCallBack gaiaCallBack);
+
+    @Get("/update_jwd")
+    LoginResponse login(@Param String lng,
+                        @Param String lat,
+                        @Param String userid,
+                        @CallBack HSTestCallback gaiaCallBack);
 
     @DownFile()
     LoginResponse downLoadFile(@DownUrl String url,

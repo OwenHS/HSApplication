@@ -2,10 +2,6 @@ package lib.hs.com.hsbaselib;
 
 import android.app.Application;
 
-import lib.hs.com.logsystemlib.support.ExceptionHandleUtil;
-import lib.hs.com.logsystemlib.support.Log;
-import lib.hs.com.logsystemlib.support.Trace;
-
 /**
  * Created by owen on 15-12-8.
  * 基础App类
@@ -17,11 +13,11 @@ public class HSApplication extends Application{
     public void onCreate() {
         super.onCreate();
 
-        /** 注册异常处理器 */
-        Log.setDebug(Log.DEBUG);
-        Log.setLevel(Trace.ALL);
-        Log.setLocalLogFileOutput(getApplicationContext(), 7, Log.DEBUG);
-        ExceptionHandleUtil.register(getApplicationContext());
+//        /** 注册异常处理器 */
+//        Log.setDebug(Log.DEBUG);
+//        Log.setLevel(Trace.ALL);
+//        Log.setLocalLogFileOutput(getApplicationContext(), 7, Log.DEBUG);
+//        ExceptionHandleUtil.register(getApplicationContext());
 
     }
 }

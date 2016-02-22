@@ -1,7 +1,6 @@
 package com.hs.hshttplib.titan;
 
 import com.hs.hshttplib.HSHttp;
-import com.hs.hshttplib.HttpCallBack;
 import com.hs.hshttplib.HttpParams;
 
 import org.json.JSONObject;
@@ -12,7 +11,7 @@ import java.util.Map;
 /**
  * Created by owen on 16-2-19.
  */
-public class DefaultHSHttp extends GaiaHttp<HSHttp, HttpParams, HttpCallBack> {
+public class DefaultHSHttp extends GaiaHttp<HSHttp, HttpParams, HSTestCallback> {
 
     public HSHttp httpClient;
 
@@ -22,28 +21,28 @@ public class DefaultHSHttp extends GaiaHttp<HSHttp, HttpParams, HttpCallBack> {
 
 
     @Override
-    public void get(String url, HttpParams httpParams, HttpCallBack httpCallBack) {
-        httpClient.get(url, httpParams, httpCallBack);
+    public void get(String url, HttpParams httpParams, HSTestCallback httpCallBack) {
+        httpClient.get(url, httpParams, httpCallBack.callback);
     }
 
     @Override
-    public void post(String url, HttpParams httpParams, HttpCallBack httpCallBack) {
-        httpClient.get(url, httpParams, httpCallBack);
+    public void post(String url, HttpParams httpParams, HSTestCallback httpCallBack) {
+        httpClient.get(url, httpParams, httpCallBack.callback);
     }
 
     @Override
-    public void put(String url, HttpParams httpParams, HttpCallBack httpCallBack) {
-        httpClient.get(url, httpParams, httpCallBack);
+    public void put(String url, HttpParams httpParams, HSTestCallback httpCallBack) {
+        httpClient.get(url, httpParams, httpCallBack.callback);
     }
 
     @Override
-    public void postJson(String url, JSONObject jsonObject, HttpCallBack httpCallBack) {
-        httpClient.post(url, jsonObject, httpCallBack);
+    public void postJson(String url, JSONObject jsonObject, HSTestCallback httpCallBack) {
+        httpClient.post(url, jsonObject, httpCallBack.callback);
     }
 
     @Override
-    public void downFile(String url,File save,HttpCallBack httpCallBack) {
-        httpClient.download(url,save,httpCallBack);
+    public void downFile(String url,File save,HSTestCallback httpCallBack) {
+        httpClient.download(url,save,httpCallBack.callback);
     }
 
     @Override

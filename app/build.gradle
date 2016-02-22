@@ -31,6 +31,5 @@ dependencies {
     compile project(':HSBaseLib')
     compile project(':HSAnnotationLib')
     compile project(':HSHttpLib')
-    compile project(':Retrofit2')
     compile project(':LogSystemLib')
 }

@@ -1,16 +1,10 @@
 package lib.hs.com.hsapplication;
 
-import android.os.Environment;
 import android.util.Log;
 
-import com.hs.hshttplib.HttpCallBack;
+import com.hs.hshttplib.titan.HSTestCallback;
 import com.hs.hshttplib.titan.Titans;
 import com.hs.lib.processannotation.ObjectGraph;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
 
 import lib.hs.com.hsapplication.config.AppApi;
 import lib.hs.com.hsapplication.config.AppConfig;
@@ -32,17 +26,17 @@ public class HSExampleApplication extends HSApplication {
         ObjectGraph graph = ObjectGraph.create(new AppConfig());
         graph.inject(appApi);
 
-        JSONObject ooo = new JSONObject();
-        try {
-            ooo.put("lng","11.0");
-            ooo.put("lnlatg","11.0");
-            ooo.put("userid","2");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
 
         Titans titans = appApi.titans;
+
+        titans.create(ILoginable.class).login("11.0","11.0","2",new HSTestCallback(){
+            @Override
+            public void onSuccess(int code, String t) {
+                Log.d("owen", t);
+            }
+        });
+
 //        titans.create(ILoginable.class).login(ooo,new HttpCallBack() {
 //            @Override
 //            public void onSuccess(String t) {
@@ -56,22 +50,22 @@ public class HSExampleApplication extends HSApplication {
 //            }
 //        });
 
-        String downloadPath = "hsstc.apk";
-        File file = new File(Environment.getExternalStorageDirectory(), downloadPath);
-
-        titans.create(ILoginable.class).downLoadFile("http://pipahr.ppp.com/mobile/android/pipahrjobseeker2015_4_23-0.apk", file, new HttpCallBack() {
-            @Override
-            public void onSuccess(File f) {
-                super.onSuccess(f);
-                Log.d("owen","downLoadfile success size = "+f.length());
-            }
-
-            @Override
-            public void onLoading(long count, long current) {
-                super.onLoading(count, current);
-                Log.d("owen", "downLoadfile count = "+count+" current = "+current);
-            }
-        });
+//        String downloadPath = "hsstc.apk";
+//        File file = new File(Environment.getExternalStorageDirectory(), downloadPath);
+//
+//        titans.create(ILoginable.class).downLoadFile("http://pipahr.ppp.com/mobile/android/pipahrjobseeker2015_4_23-0.apk", file, new HttpCallBack() {
+//            @Override
+//            public void onSuccess(File f) {
+//                super.onSuccess(f);
+//                Log.d("owen","downLoadfile success size = "+f.length());
+//            }
+//
+//            @Override
+//            public void onLoading(long count, long current) {
+//                super.onLoading(count, current);
+//                Log.d("owen", "downLoadfile count = "+count+" current = "+current);
+//            }
+//        });
     }
 
 }
