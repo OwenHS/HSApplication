@@ -1,15 +1,11 @@
 package lib.hs.com.hsapplication.httpcenter;
 
-import com.hs.hshttplib.HttpCallBack;
 import com.hs.hshttplib.annotations.CallBack;
-import com.hs.hshttplib.annotations.DownFile;
-import com.hs.hshttplib.annotations.DownUrl;
-import com.hs.hshttplib.annotations.FileContainer;
-import com.hs.hshttplib.annotations.Get;
 import com.hs.hshttplib.annotations.Param;
-import com.hs.hshttplib.titan.HSTestCallback;
+import com.hs.hshttplib.annotations.Post;
+import com.hs.hshttplib.titan.GaiaCommonCallback;
 
-import java.io.File;
+import lib.hs.com.hsapplication.httpcenter.bean.LoginResponse;
 
 
 /**
@@ -17,15 +13,10 @@ import java.io.File;
  */
 public interface ILoginable {
 
-    @Get("/update_jwd")
-    LoginResponse login(@Param String lng,
-                        @Param String lat,
-                        @Param String userid,
-                        @CallBack HSTestCallback gaiaCallBack);
-
-    @DownFile()
-    LoginResponse downLoadFile(@DownUrl String url,
-                               @FileContainer File file,
-                               @CallBack HttpCallBack gaiaCallBack);
+    @Post("/update_jwd")
+    LoginResponse login(@Param("lng") String lng,
+                        @Param("lat") String lat,
+                        @Param("userid") String userid,
+                        @CallBack GaiaCommonCallback gaiaCallBack);
 
 }

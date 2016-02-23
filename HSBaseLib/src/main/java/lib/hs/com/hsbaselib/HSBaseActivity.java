@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import lib.hs.com.hsbaselib.activitystack.ActivityStack;
 import lib.hs.com.logsystemlib.support.Log;
 
 /**
@@ -26,7 +25,7 @@ public abstract class HSBaseActivity extends HSUiInitialActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
-        ActivityStack.getInstance().addActivity(this);
+//        ActivityStack.getInstance().addActivity(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -75,7 +74,7 @@ public abstract class HSBaseActivity extends HSUiInitialActivity {
         Log.d(TAG,"onDestroy");
         activityState = ActivityState.DESTROY;
         super.onDestroy();
-        ActivityStack.getInstance().finishActivity(this);
+//        ActivityStack.getInstance().finishActivity(this);
     }
 
     @Override

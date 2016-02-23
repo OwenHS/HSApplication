@@ -32,4 +32,5 @@ dependencies {
     compile project(':HSAnnotationLib')
     compile project(':HSHttpLib')
     compile project(':LogSystemLib')
+    compile files('libs/candyhttps1.1.6.jar')
 }

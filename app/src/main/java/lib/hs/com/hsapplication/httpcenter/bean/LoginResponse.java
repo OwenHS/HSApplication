@@ -1,4 +1,4 @@
-package lib.hs.com.hsapplication.httpcenter;
+package lib.hs.com.hsapplication.httpcenter.bean;
 
 /**
  * Created by owen on 16-2-3.

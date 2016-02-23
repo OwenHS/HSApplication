@@ -9,15 +9,10 @@ import java.util.Map;
 /**
  * Created by owen on 16-2-18.
  */
-public abstract class GaiaHttp<T, J, K> {
-    public T httpClient;
-
+public abstract class GaiaHttp<J> {
     public GaiaHttp() {
     }
 
-    public GaiaHttp(T t) {
-        this.httpClient = t;
-    }
 
     /**
      * 用于配置HttpClient,属于全局配置
@@ -38,19 +33,7 @@ public abstract class GaiaHttp<T, J, K> {
     /**
      * 数据包装放到网上
      */
-    public J translateTo(Map<String, String> paramsMap) {
-        throw new UnsupportedOperationException("translateTo wrong");
-    }
-
-    ;
-
-    public T getHttpClient() {
-        return httpClient;
-    }
-
-    public void setHttpClient(T httpClient) {
-        this.httpClient = httpClient;
-    }
+    public abstract J translateTo(Map<String, String> paramsMap);
 
     public void invoke(Object[] args, MethodHandler methodHandler) {
         RequestMethodInfo info = methodHandler.methodInfo;
@@ -60,35 +43,40 @@ public abstract class GaiaHttp<T, J, K> {
                 paramsMap.put(info.params_values.get(i), String.valueOf(args[i]));
             }
         }
-
-        if (info.requestMethod == RequestMethodInfo.GaiaMethod.Get) {
-            get(info.url, translateTo(paramsMap), (K) args[info.callBackIndex]);
-        }else if(info.requestMethod == RequestMethodInfo.GaiaMethod.Post){
-            post(info.url, translateTo(paramsMap), (K) args[info.callBackIndex]);
-        }else if(info.requestMethod == RequestMethodInfo.GaiaMethod.Put){
-            put(info.url, translateTo(paramsMap), (K) args[info.callBackIndex]);
-        }else if(info.requestMethod == RequestMethodInfo.GaiaMethod.PostJson){
-            postJson(info.url, (JSONObject)args[info.jsonIndex], (K) args[info.callBackIndex]);
-        }else if(info.requestMethod == RequestMethodInfo.GaiaMethod.DownFile){
-            downFile((String) args[info.fileUrlIndex],(File) args[info.fileIndex],(K) args[info.callBackIndex]);
+        try {
+            if (info.requestMethod == RequestMethodInfo.GaiaMethod.Get) {
+                get(info.url, translateTo(paramsMap), (GaiaCommonCallback) args[info.callBackIndex]);
+            } else if (info.requestMethod == RequestMethodInfo.GaiaMethod.Post) {
+                post(info.url, translateTo(paramsMap), (GaiaCommonCallback) args[info.callBackIndex]);
+            } else if (info.requestMethod == RequestMethodInfo.GaiaMethod.Put) {
+                put(info.url, translateTo(paramsMap), (GaiaCommonCallback) args[info.callBackIndex]);
+            } else if (info.requestMethod == RequestMethodInfo.GaiaMethod.PostJson) {
+                postJson(info.url, (JSONObject) args[info.jsonIndex], (GaiaCommonCallback) args[info.callBackIndex]);
+            } else if (info.requestMethod == RequestMethodInfo.GaiaMethod.DownFile) {
+                downFile((String) args[info.fileUrlIndex], (File) args[info.fileIndex], (GaiaCommonCallback) args[info.callBackIndex]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public void get(String url, J j, K k) {
-
-    }
-    public void post(String url, J j, K k) {
-
-    }
-    public void put(String url, J j, K k) {
+    public void get(String url, J j, GaiaCommonCallback k) {
 
     }
 
-    public void postJson(String url, JSONObject jsonObject, K k) {
+    public void post(String url, J j, GaiaCommonCallback k) {
 
     }
 
-    public void downFile(String url,File save,K k){
-        
+    public void put(String url, J j, GaiaCommonCallback k) {
+
+    }
+
+    public void postJson(String url, JSONObject jsonObject, GaiaCommonCallback k) {
+
+    }
+
+    public void downFile(String url, File save, GaiaCommonCallback k) {
+
     }
 }

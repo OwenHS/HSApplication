@@ -51,7 +51,7 @@ public class Titans {
                         //当动态代理触发相应代码的时候调用
                         MethodHandler handler = loadMethodInfo(method);
                         if(handler != null){
-                            handler .invoke(args);
+                            handler.invoke(args);
                         }
                         return null;
                     }
