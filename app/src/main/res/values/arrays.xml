@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="patterns_names">
+        <item>com.hs.libs.sample.index.design.module.FactoryPattern</item>
+        <item>com.hs.libs.sample.index.design.module.StrategyPattern</item>
+        <item>com.hs.libs.sample.index.design.module.DecoratorPattern</item>
+        <item>com.hs.libs.sample.index.design.module.ProxyPattern</item>
+        <item>com.hs.libs.sample.index.design.module.ProtoTypePattern</item>
+        <item>com.hs.libs.sample.index.design.module.FacadePattern</item>
+        <item>com.hs.libs.sample.index.design.module.BuildPattern</item>
+        <item>com.hs.libs.sample.index.design.module.ObserverPattern</item>
+        <item>com.hs.libs.sample.index.design.module.StatePattern</item>
+        <item>com.hs.libs.sample.index.design.module.BridgePattern</item>
+        <item>com.hs.libs.sample.index.design.module.CommondPattern</item>
+        <item>com.hs.libs.sample.index.design.module.ChainOfResponsibilityPattern</item>
+        <item>com.hs.libs.sample.index.design.module.MediatorPattern</item>
+    </string-array>
+
+    <string-array name="knowledge_names">
+        <item>com.hs.libs.sample.index.knowledge.module.FutureAndCallableTest</item>
+    </string-array>
+
+    <string-array name="android_basic_names">
+        <item>com.hs.libs.sample.index.basic.module.StartMethodsTest</item>
+        <item>com.hs.libs.sample.index.basic.module.AIDLTest</item>
+        <item>com.hs.libs.sample.index.basic.module.MessengerTest</item>
+        <item>com.hs.libs.sample.index.basic.module.EventTest</item>
+    </string-array>
+</resources>

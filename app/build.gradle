@@ -1,36 +1,143 @@
 apply plugin: 'com.android.application'
 
-android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+}
 
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    lintOptions {
+        abortOnError = false
+        disable 'MissingTranslation', 'ExtraTranslation'
+    }
 
     defaultConfig {
-        applicationId "lib.hs.com.hsapplication"
-        minSdkVersion 15
-        targetSdkVersion 23
+        applicationId "com.hs.libs.sample"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        buildConfigField("Boolean", "IS_DEBUG", "true")
+        flavorDimensions "versionCode"
+
+        //3.0之前使用注解不需要,3.0之后添加如下配置就OK了
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [testParam: 'I am diaobaole']
+                includeCompileClasspath true
+                classNames  = ["com.hs.lib.inject.processor.HSInjectProcessor"]
+            }
+        }
     }
+
+    //签名
+    signingConfigs {
+        debug {
+
+        }
+        release {// 自己的签名文件
+            storeFile file("ECSKey.jks")
+            storePassword "123456"
+            keyAlias "ECSKey"
+            keyPassword "123456"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
+//            3.0之前的配置
+//            applicationVariants.all {
+//                variant ->
+//                    variant.outputs.each {
+//                        output ->
+//                            def outputFile = output.outputFile
+//                            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                                def fileName = "hs_module_v${defaultConfig.versionName}.apk"
+//                                output.outputFile = new File(outputFile.parent, fileName)
+//                            }
+//                    }
+//            }
+
+            //3.0之后的配置
+            applicationVariants.all {
+                variant ->
+                    variant.outputs.all {
+                        def apkName = "hs_module_v" + variant.versionName
+                        if (!variant.flavorName.isEmpty()) {
+                            apkName += ('-' + variant.flavorName)
+                        }
+                        outputFileName = apkName + '.apk'
+                    }
+            }
+
         }
+
+
+    }
+
+    //渠道Flavors，配置不同风格的app,友盟渠道统计时用到
+    productFlavors {
+        "offical" {}
+        "360" {}
+        yingyongbao {}
+        wandoujia {}
+        baidu {}
+        "91" {}
+    }
+
+
+    dexOptions {
+//        incremental = true;
+        preDexLibraries = false
+        javaMaxHeapSize "4g"
     }
 
     packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/ASL2.0'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+            res.srcDirs = [
+                    'src/main/res',// 识别res下的资源文件
+                    'src/main/res/layouts/common',
+                    'src/main/res/layouts/home',
+                    'src/main/res/layouts/design',
+                    'src/main/res/layouts/widget',
+                    'src/main/res/layouts/http',
+                    'src/main/res/layouts/knowledge',
+                    'src/main/res/layouts/androidbasic'
+            ]
+        }
+    }
+    buildToolsVersion '26.0.2'
+}
+
+//为aar服务，使能找到aar的路径
+repositories {
+    flatDir {
+        dirs 'libs' //this way we can find the .aar file in libs folder
     }
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':HSBaseLib')
-    compile project(':HSAnnotationLib')
     compile project(':HSHttpLib')
-    compile project(':LogSystemLib')
-    compile files('libs/candyhttps1.1.6.jar')
+    compile files('libs/HSAnnotationLib.jar')
+    compile project(':HSWidget')
+    compile(name: 'recyclerview-v7-23.4.0', ext: 'aar')
+    compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
+    implementation project(':HSInjectLib')
 }

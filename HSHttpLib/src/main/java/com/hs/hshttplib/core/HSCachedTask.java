@@ -1,5 +1,11 @@
 package com.hs.hshttplib.core;
 
+import android.annotation.SuppressLint;
+
+import com.hs.hshttplib.util.CipherUtils;
+import com.hs.hshttplib.util.FileUtils;
+import com.hs.hshttplib.util.StringUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,19 +16,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import android.annotation.SuppressLint;
-
-import com.hs.hshttplib.util.CipherUtils;
-import com.hs.hshttplib.util.FileUtils;
-import com.hs.hshttplib.util.StringUtils;
-
 /**
  * 本类主要用于获取网络数据，并将结果缓存至文件，文件名为key，缓存有效时间为value <br>
  * <b>注：</b> 参数Result需要序列化，否则不能或者不能完整的读取缓存。<br>
  */
 @SuppressLint("NewApi")
-public abstract class HSCachedTask<Params, Progress, Result extends Serializable> extends
-		HSSafeTask<Params, Progress, Result>
+public abstract class HSCachedTask<Params, Progress, Result extends Serializable> extends HSSafeTask<Params, Progress, Result>
 {
 	private static String cachePath = "folderName"; // 缓存路径
 	private String cacheName = "MD5_effectiveTime"; // 缓存文件名格式
@@ -46,7 +45,6 @@ public abstract class HSCachedTask<Params, Progress, Result extends Serializable
 	/**
 	 * 读取缓存以后sleep的时间
 	 * 
-	 * @param delayCacheTime
 	 */
 	public long getDelayCacheTime()
 	{

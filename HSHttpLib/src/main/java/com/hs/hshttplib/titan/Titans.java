@@ -1,5 +1,6 @@
 package com.hs.hshttplib.titan;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.lang.reflect.InvocationHandler;
@@ -31,9 +32,12 @@ public class Titans {
 
     public String baseUrl;
 
-    private Titans(String baseUrl, GaiaHttp gaiaHttp) {
+    public Context context;
+
+    private Titans(Context context,String baseUrl, GaiaHttp gaiaHttp) {
         this.httpClient = gaiaHttp;
         this.baseUrl = baseUrl;
+        this.context = context;
     }
 
     //创建动态对象,proxyCache用来缓存动态代理生成的对象,重复创建对象
@@ -70,16 +74,19 @@ public class Titans {
     private MethodHandler loadMethodInfo(Method method) {
 
         MethodHandler methodHandler = null;
-
-        synchronized (methodHandlerCache) {
-            methodHandler = methodHandlerCache.get(method);
-            if (methodHandler == null) {
-                methodHandler = MethodHandler.create(method, this);
-                if(methodHandler == null){
-                    return null;
+        try {
+            synchronized (methodHandlerCache) {
+                methodHandler = methodHandlerCache.get(method);
+                if (methodHandler == null) {
+                    methodHandler = MethodHandler.create(method, this);
+                    if (methodHandler == null) {
+                        return null;
+                    }
+                    methodHandlerCache.put(method, methodHandler);
                 }
-                methodHandlerCache.put(method, methodHandler);
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return methodHandler;
     }
@@ -96,13 +103,14 @@ public class Titans {
 
         }
 
-        public Titans build() {
+        public Titans build(Context context) {
 
             if (httpClient == null) {
                 httpClient = new DefaultHSHttp();
+                Log.d("PipaHttpClient"," httpClient = null");
             }
 
-            return new Titans(baseUrl, httpClient);
+            return new Titans(context.getApplicationContext(),baseUrl, httpClient);
         }
 
         public Builder setHttpClient(GaiaHttp httpClient) {

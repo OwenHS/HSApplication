@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hs.widget.layout.ColumnLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                      xmlns:app="http://schemas.android.com/apk/res-auto"
+                                      android:layout_width="match_parent"
+                                      android:layout_height="match_parent">
+    <com.hs.widget.layout.ColumnLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/optionBackground"
+        app:columnNumber="2"
+        app:columnCenterVertical="true"
+        app:stretchColumns="*"
+        app:borderBottomColor="#4790D3"
+        app:contentMarginLeft="5dp"
+        app:contentMarginTop="5dp"
+        app:contentMarginRight="5dp"
+        app:contentMarginBottom="5dp"
+        app:contentMarginVertical="10dp"
+        app:dividerColorVertical="#4790D3"
+        app:dividerPaddingVertical="10dp"
+        >
+        <com.hs.libs.sample.widgetdemo.extend.FadeTextButton
+            android:id="@+id/toggleViewPager"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@color/textButton"
+            android:textSize="18sp" />
+        <com.hs.libs.sample.widgetdemo.extend.FadeTextButton
+            android:id="@+id/toggleOrientation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@color/textButton"
+            android:textSize="18sp" />
+    </com.hs.widget.layout.ColumnLayout>
+    <com.hs.widget.layout.WrapLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</com.hs.widget.layout.ColumnLayout>

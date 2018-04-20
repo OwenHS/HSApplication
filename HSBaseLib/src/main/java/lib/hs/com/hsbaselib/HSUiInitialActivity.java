@@ -1,11 +1,13 @@
 package lib.hs.com.hsbaselib;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.hs.lib.inject.HSInjectUtil;
+import com.hs.lib.inject.InjectType;
 
 import lib.hs.com.hsbaselib.interfaces.Broadcastable;
 import lib.hs.com.hsbaselib.interfaces.SkipActivityable;
@@ -14,28 +16,25 @@ import lib.hs.com.hsbaselib.interfaces.UIProcessable;
 /**
  * 用于整合activity的流程
  */
-public abstract class HSUiInitialActivity extends AppCompatActivity implements UIProcessable,Broadcastable, SkipActivityable,View.OnClickListener{
+public abstract class HSUiInitialActivity extends FragmentActivity implements UIProcessable, Broadcastable, SkipActivityable, View.OnClickListener {
 
     private static final String TAG = "HSUiInitialActivity";
     private static int WHICH_MSG = 0;
     private static ThreadDataCallBack callback;
 
+
     /**
      * 一个私有回调类，线程中初始化数据完成后的回调
      */
-    private interface ThreadDataCallBack
-    {
+    private interface ThreadDataCallBack {
         void onSuccess();
     }
 
     // 当线程中初始化的数据初始化完成后，调用回调方法
-    private static Handler threadHandle = new Handler()
-    {
+    private static Handler threadHandle = new Handler() {
         @Override
-        public void handleMessage(android.os.Message msg)
-        {
-            if (msg.what == WHICH_MSG)
-            {
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == WHICH_MSG) {
                 callback.onSuccess();
             }
         }
@@ -44,10 +43,13 @@ public abstract class HSUiInitialActivity extends AppCompatActivity implements U
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //使用了编译时注解
-        HSInjectUtil.inject(this);
+        setActivityStyle();
+
         //如果用了编译时注解的注解类，setRootView可以不用复写
-        setRootView();
+        if(!setRootView()){
+            //使用了编译时注解
+            HSInjectUtil.inject(InjectType.ACTIVITY, this, this);
+        }
 
         initializar();
 
@@ -55,35 +57,54 @@ public abstract class HSUiInitialActivity extends AppCompatActivity implements U
     }
 
     /*用于初始化信息 包括子线程和主线程两部分*/
-    private void initializar() {
+    protected void initializar() {
+
+        //获取intent的数据
+        getIntentData(getIntent());
+
+        //初始化控件
+        initWidget();
+
+        //主线程中初始化信息
+        initData();
+
+        //添加监听事件
+        initListener();
+
         //子线程中初始化信息
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 getDataFromThread();
                 threadHandle.sendEmptyMessage(WHICH_MSG);
             }
         }.start();
-
-        //主线程中初始化信息
-        initData();
-        //初始化控件
-        initWidget();
     }
 
     @Override
-    public void setRootView() {
+    public void getIntentData(Intent intent) {
 
     }
 
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void setActivityStyle() {
+    }
+
+    @Override
+    public boolean setRootView() {
+        return false;
+    }
 
     @Override
     public void getDataFromThread() {
-        callback = new ThreadDataCallBack()
-        {
+        callback = new ThreadDataCallBack() {
             @Override
-            public void onSuccess()
-            {
+            public void onSuccess() {
                 initThreadData();
             }
         };
@@ -94,12 +115,12 @@ public abstract class HSUiInitialActivity extends AppCompatActivity implements U
     }
 
     @Override
-    public void initData() {
+    public void initWidget() {
 
     }
 
     @Override
-    public void initWidget() {
+    public void initListener() {
 
     }
 
@@ -112,6 +133,7 @@ public abstract class HSUiInitialActivity extends AppCompatActivity implements U
     public void onClick(View v) {
         onWidgetClick(v);
     }
+
 
     @Override
     public void registBroadcast() {
@@ -128,4 +150,5 @@ public abstract class HSUiInitialActivity extends AppCompatActivity implements U
         unregistBroadcast();
         super.onDestroy();
     }
+
 }

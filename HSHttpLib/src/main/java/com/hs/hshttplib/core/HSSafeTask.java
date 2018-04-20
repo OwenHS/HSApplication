@@ -26,8 +26,8 @@ import android.util.Log;
  * 如果用户取消了任务，那么会将回调http.HttpCallback.onCancelled().
  * 
  */
-public abstract class HSSafeTask<Params, Progress, Result> extends
-        HSAsyncTask<Params, Progress, Result> {
+public abstract class HSSafeTask<Params, Progress, Result> extends HSAsyncTask<Params, Progress, Result> {
+
     private Exception cause;
 
     @Override
@@ -35,7 +35,8 @@ public abstract class HSSafeTask<Params, Progress, Result> extends
         try {
             onPreExecuteSafely();
         } catch (Exception e) {
-            Log.d("NetSafe","onPreExecute e--->"+e.toString());
+            Log.d("owen","onPreExecute e--->"+e.toString());
+            cause = e;
         }
     }
 
@@ -44,7 +45,7 @@ public abstract class HSSafeTask<Params, Progress, Result> extends
         try {
             return doInBackgroundSafely(params);
         } catch (Exception e) {
-        	Log.d("NetSafe","doInBackground e--->"+e.toString());
+        	Log.d("owen","doInBackground e--->"+e.toString());
             cause = e;
         }
         return null;
@@ -55,7 +56,8 @@ public abstract class HSSafeTask<Params, Progress, Result> extends
         try {
             onProgressUpdateSafely(values);
         } catch (Exception e) {
-        	Log.d("NetSafe","onProgressUpdate e--->"+e.toString());
+        	Log.d("owen","onProgressUpdate e--->"+e.toString());
+            cause = e;
         }
     }
 
@@ -64,7 +66,7 @@ public abstract class HSSafeTask<Params, Progress, Result> extends
         try {
             onPostExecuteSafely(result, cause);
         } catch (Exception e) {
-        	Log.d("NetSafe","onPostExecute e--->"+e.toString());
+        	Log.d("owen","onPostExecute e--->"+e.toString());
         }
     }
 
@@ -88,8 +90,7 @@ public abstract class HSSafeTask<Params, Progress, Result> extends
      *            入参
      * @return
      */
-    protected abstract Result doInBackgroundSafely(Params... params)
-            throws Exception;
+    protected abstract Result doInBackgroundSafely(Params... params) throws Exception;
 
     /**
      * Main UI Thread<br>
@@ -98,8 +99,7 @@ public abstract class HSSafeTask<Params, Progress, Result> extends
      * 
      * @param result
      */
-    protected void onPostExecuteSafely(Result result, Exception e)
-            throws Exception {}
+    protected void onPostExecuteSafely(Result result, Exception e) throws Exception {}
 
     /**
      * Main UI Thread<br>

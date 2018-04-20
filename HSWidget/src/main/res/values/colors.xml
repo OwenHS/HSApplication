@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="timetimepicker_default_text_color">#999999</color>
+    <color name="timepicker_toolbar_bg">#e60012</color>
+    <color name="timepicker_dialog_bg">#80000000</color>
+    <color name="timepicker_line">#e8e8e8</color>
+
+
+    <color name="bgColor_actionsheet_cancel_nor">#ffffff</color>
+    <color name="bgColor_alert_button_press">#EAEAEA</color>
+    <color name="bgColor_alertview_alert">#f8f8f8</color>
+    <color name="bgColor_alertview_alert_start">#f0f0f0</color>
+    <color name="bgColor_divier">#d7d7db</color>
+    <color name="bgColor_overlay">#60000000</color>
+    <color name="textColor_actionsheet_msg">#8f8f8f</color>
+    <color name="textColor_actionsheet_title">#8f8f8f</color>
+    <color name="textColor_alert_button_cancel">#007aff</color>
+    <color name="textColor_alert_button_destructive">#ff3b30</color>
+    <color name="textColor_alert_button_others">#007aff</color>
+    <color name="textColor_alert_msg">#000000</color>
+    <color name="textColor_alert_title">#000000</color>
+    //color
+    <color name="tram">#00000000</color>
+</resources>

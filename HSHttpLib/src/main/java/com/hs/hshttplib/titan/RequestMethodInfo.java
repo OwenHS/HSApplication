@@ -7,21 +7,29 @@ import java.util.HashMap;
  */
 public class RequestMethodInfo {
 
-    public enum GaiaMethod{Get,Put,Post,PostJson,DownFile};
+    public Class<?> retrunType;
+
+    public enum GaiaMethod{Get,Put,Post,PostJson,DownFile,UploadFile,JNI,Request,Execute};
 
     public String url = "";
 
-    public int callBackIndex;
+    public String allUrl = "";
 
-    public int jsonIndex;
+    //回调接口的位置
+    public int callBackIndex = -1;
 
+    //json接口的位置
+    public int jsonIndex = -1;
+
+    //下载文件存放地址参数位置
     public int fileIndex;
 
+    public String fileKey;
+    //文件网络下载参数存放地址
     public int fileUrlIndex;
 
     public GaiaMethod requestMethod;
 
     public HashMap<Integer,String> params_values;
-
 
 }

@@ -2,6 +2,7 @@ package lib.hs.com.hsbaselib.activitystack;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import java.util.Stack;
 
@@ -79,9 +80,9 @@ public class ActivityStack {
     public void finishActivity(Activity activity) {
         if (activity != null) {
             aStack.remove(activity);
-            activity.finish();//此处不用finish
             activity = null;
         }
+        Log.e("test","stack size "+ aStack.size());
     }
 
     /**
@@ -101,11 +102,14 @@ public class ActivityStack {
      * @param cls
      */
     public void finishOthersActivity(Class<?> cls) {
+        Log.d("Stack","start ========================================================");
         for (UIProcessable activity : aStack) {
             if (!(activity.getClass().equals(cls))) {
-                finishActivity((Activity) activity);
+                Log.d("Stack","clear "+activity.getClass().toString());
+                ((Activity) activity).finish();
             }
         }
+        Log.d("Stack","end   ======================================================== ");
     }
 
     /**
@@ -130,5 +134,16 @@ public class ActivityStack {
         } catch (Exception e) {
             Runtime.getRuntime().exit(-1);
         }
+    }
+
+
+    /**
+     * 打印当前栈activity信息
+     */
+    public void LogStack() {
+        for(UIProcessable activity : aStack){
+            Log.d("Stack",activity.getClass().toString());
+        }
+        Log.d("Stack","***********************************************************");
     }
 }

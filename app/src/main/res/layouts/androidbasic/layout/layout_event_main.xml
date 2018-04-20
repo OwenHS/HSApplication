@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.hs.libs.sample.common.CommonTitleView
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_padding"
+        android:background="@android:color/background_light">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello World!" />
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:weightSum="2"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1">-->
+
+        <!--</RelativeLayout>-->
+
+
+        <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:padding="5dp">-->
+        <!--<View-->
+        <!--android:id="@+id/testView"-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:text="common TextView"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_margin="20dp"-->
+        <!--android:background="@android:color/holo_green_light"/>-->
+
+        <!--<com.aohuan.test.layout.view.DodoView-->
+        <!--android:id="@+id/testView2"-->
+        <!--android:layout_width="120dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:text="DodoTextView"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_margin="20dp"-->
+        <!--android:padding="30dp"-->
+        <!--android:layout_marginTop="10dp"/>-->
+
+        <!--</RelativeLayout>-->
+
+        <!--</LinearLayout>-->
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

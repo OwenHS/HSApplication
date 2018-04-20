@@ -19,7 +19,6 @@ import javax.net.ssl.SSLSocketFactory;
  **********************************************************/
 public class HttpConfig
 {
-
 	/** 缓存文件夹 */
 	public static String CACHEPATH = "HSLibrary/cache";
 	/** 定义http上传文件的数据分隔线 */

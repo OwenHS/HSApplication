@@ -1,5 +1,6 @@
 package lib.hs.com.hsbaselib.interfaces;
 
+import android.content.Intent;
 import android.view.View;
 
 /**
@@ -9,28 +10,48 @@ import android.view.View;
 public interface UIProcessable {
 
     /**
-     *  用于给Activity设置界面
+     * 设置Activity风格
      */
-    public void setRootView();
+    void setActivityStyle();
+
+    /**
+     * 用于给Activity设置界面
+     */
+    boolean setRootView();
 
     /**
      * 在线程中获取部分信息
      */
-    public void getDataFromThread();
+    void getDataFromThread();
 
     /**
-     *  在主线程中初始化信息
+     * 在主线程中初始化信息
      */
-    public void initData();
+    void initData();
 
     /**
      * 初始化控件，设置初始值时使用
      */
-    public void initWidget();
+    void initWidget();
+
+
+    /**
+     * 添加监听事件
+     */
+    void initListener();
 
     /**
      *
      */
-    public void onWidgetClick(View v);
+    void onWidgetClick(View v);
+
+    void getIntentData(Intent intent);
+
+//    /**
+//     * 设置Loading布局
+//     */
+//    void setLoadingView(View v);
+//
+//    void addInnerLoadView();
 
 }

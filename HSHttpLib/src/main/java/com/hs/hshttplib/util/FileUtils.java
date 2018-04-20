@@ -1,5 +1,18 @@
 package com.hs.hshttplib.util;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+
+import com.hs.hshttplib.bitmap.HSBitmap;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -15,17 +28,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
-
-import android.app.Activity;
-import android.content.Context;
-import android.content.CursorLoader;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 
 /**
  * 文件与流处理工具类<br>
@@ -68,6 +70,7 @@ public final class FileUtils {
 			}
 		}
 	}
+
 
 	/**
 	 * 从指定文件夹获取文件
@@ -117,9 +120,10 @@ public final class FileUtils {
 		if (inStream == null) {
 			return null;
 		}
-		Log.d("owen","start input2byte");
+		Log.d(HSBitmap.TAG,"start input2byte +"+System.currentTimeMillis());
 		byte[] in2b = null;
 		BufferedInputStream in = new BufferedInputStream(inStream);
+
 		ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
 		int rc = 0;
 		try {
@@ -132,7 +136,7 @@ public final class FileUtils {
 		} finally {
 			closeIO(inStream, in, swapStream);
 		}
-		Log.d("owen","end input2byte");
+		Log.d("owen","end input2byte "+in2b.length+"    时间 "+System.currentTimeMillis());
 		return in2b;
 	}
 
@@ -216,6 +220,7 @@ public final class FileUtils {
 	 * @param closeables
 	 */
 	public static void closeIO(Closeable... closeables) {
+		Log.e(HSBitmap.TAG,"closeIO");
 		if (null == closeables || closeables.length <= 0) {
 			return;
 		}

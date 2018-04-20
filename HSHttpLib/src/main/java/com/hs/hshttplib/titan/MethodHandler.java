@@ -21,34 +21,39 @@ public class MethodHandler {
     //请求接口的信息
     public RequestMethodInfo methodInfo;
 
-    private Titans titans;
+    protected Titans titans;
 
-    private MethodHandler(RequestMethodInfo methodInfo, Titans titans) {
+    protected MethodHandler(RequestMethodInfo methodInfo, Titans titans) {
         this.methodInfo = methodInfo;
         this.titans = titans;
     }
 
     /**
      * 用于创建一个MethodHandler
-     * @param method  需要执行
+     *
+     * @param method 需要执行
      * @param titans
      * @return
      */
     public static MethodHandler create(Method method, Titans titans) {
         RequestMethodInfo methodInfo = RequestMethodInfoFactory.parse(method);
-        if(methodInfo == null){
+        if (methodInfo == null) {
             return null;
         }
-        if(titans.baseUrl != null){
-            methodInfo.url = titans.baseUrl + methodInfo.url;
-        }
-        return new MethodHandler(methodInfo,titans);
+        return new MethodHandler(methodInfo, titans);
     }
 
     //用于执行此方法
     public void invoke(Object... args) {
-        titans.httpClient.invoke(args,this);
+
+        methodInfo.allUrl = titans.baseUrl + methodInfo.url;
+
+        if (methodInfo.callBackIndex == -1) {
+            //有可能是忘写callback，有可能是不需要callback，只是调用接口
+            titans.httpClient.invokeWithoutCallback(args, this);
+        } else if (((GaiaCommonCallback) args[methodInfo.callBackIndex]).checkToInvoke()) {
+            titans.httpClient.invoke(args, this);
+        }
+
     }
-
-
 }

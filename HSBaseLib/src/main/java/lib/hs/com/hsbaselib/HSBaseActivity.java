@@ -3,18 +3,23 @@ package lib.hs.com.hsbaselib;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
-import lib.hs.com.logsystemlib.support.Log;
+import lib.hs.com.hsbaselib.activitystack.ActivityStack;
 
 /**
  * 用于添加log系统
  */
-public abstract class HSBaseActivity extends HSUiInitialActivity {
+public abstract class HSBaseActivity extends HSBaseToolsActivity {
 
     private static final String TAG = "HSBaseActivity";
 
-    /** Activity状态 */
+    /**
+     * Activity状态
+     */
     public ActivityState activityState = ActivityState.DESTROY;
+
     /**
      * 当前Activity状态
      */
@@ -25,27 +30,27 @@ public abstract class HSBaseActivity extends HSUiInitialActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
-//        ActivityStack.getInstance().addActivity(this);
+        ActivityStack.getInstance().addActivity(this);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onResume() {
-        Log.d(TAG,"onResume");
+        Log.d(TAG, "onResume");
         super.onResume();
         activityState = ActivityState.RESUME;
     }
 
     @Override
     protected void onStart() {
-        Log.d(TAG,"onStart");
+        Log.d(TAG, "onStart");
         super.onStart();
     }
 
 
     @Override
     public void onAttachedToWindow() {
-        Log.d(TAG,"onAttachedToWindow");
+        Log.d(TAG, "onAttachedToWindow");
         super.onAttachedToWindow();
     }
 
@@ -58,28 +63,28 @@ public abstract class HSBaseActivity extends HSUiInitialActivity {
 
     @Override
     protected void onStop() {
-        Log.d(TAG,"onStop");
+        Log.d(TAG, "onStop");
         super.onStop();
         activityState = ActivityState.STOP;
     }
 
     @Override
     protected void onRestart() {
-        Log.d(TAG,"onRestart");
+        Log.d(TAG, "onRestart");
         super.onRestart();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG,"onDestroy");
+        Log.d(TAG, "onDestroy");
         activityState = ActivityState.DESTROY;
         super.onDestroy();
-//        ActivityStack.getInstance().finishActivity(this);
+        ActivityStack.getInstance().finishActivity(this);
     }
 
     @Override
     public void onDetachedFromWindow() {
-        Log.d(TAG,"onDetachedFromWindow");
+        Log.d(TAG, "onDetachedFromWindow");
         super.onDetachedFromWindow();
     }
 
@@ -139,4 +144,5 @@ public abstract class HSBaseActivity extends HSUiInitialActivity {
         intent.setClass(aty, cls);
         aty.startActivity(intent);
     }
+
 }

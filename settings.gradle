@@ -1,1 +1,1 @@
-include ':app', ':HSBaseLib', ':LogSystemLib', ':HSAnnotationLib', ':HSHttpLib'
+include ':app', ':HSBaseLib', ':HSHttpLib', ':HSInjectLib', ':HSLogSystem', ':HSToolsLib', ':HSWidget', ':HSHttp2', ':aidlservice'

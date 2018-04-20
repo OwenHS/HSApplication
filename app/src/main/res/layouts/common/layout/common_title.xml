@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/x89"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/common_left"
+        android:layout_width="@dimen/y110"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/common_title_left_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x25"
+            android:src="@drawable/nav_back_icon_n" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/common_center"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/view"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/common_tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/common_right"
+        android:layout_width="@dimen/y110"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/common_title_right_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x25"
+             />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_line" />
+
+</RelativeLayout>

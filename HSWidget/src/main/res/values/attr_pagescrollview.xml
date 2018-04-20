@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PageScrollView">
+        <!--滑动交互 ViewPager 方式-->
+        <attr name="viewPagerStyle" format="boolean"/>
+        <!--所有的child居中-->
+        <attr name="childCenter" format="boolean"/>
+        <!--所有的child填充整个父容器-->
+        <attr name="childFillParent" format="boolean"/>
+        <!--item 的size 按父容器的size 百分比-->
+        <attr name="sizeFixedPercent" format="float"/>
+        <!--滑动悬停到开始位置的child 索引-->
+        <attr name="floatViewStartIndex" format="integer"/>
+        <!--滑动悬停到结束位置的child 索引-->
+        <attr name="floatViewEndIndex" format="integer"/>
+    </declare-styleable>
+</resources>

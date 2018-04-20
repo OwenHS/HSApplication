@@ -5,6 +5,8 @@ import com.hs.hshttplib.util.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -13,258 +15,229 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class HttpParams
-{
-	public Map<String, String> urlParams;
-	
-	private SortBy order = SortBy.NonOrder;
-	
-	public enum SortBy
-	{
-		NonOrder,OrderByAlbet
-	}
-	
-	public ConcurrentHashMap<String, FileWrapper> fileWraps;
+public class HttpParams {
+    public Map<String, String> urlParams;
+    public static final String SortBy = "SortBy";
+    public static final String Default = "Default";
+    private String order = "Default";
+    public ConcurrentHashMap<String, HttpParams.FileWrapper> fileWraps;
 
-	public HttpParams()
-	{
-		init();
-	}
-	
-	public HttpParams(SortBy order)
-	{
-		this.order = order;
-	}
-	
-	public HttpParams(int i)
-	{
-		init(i);
-	}
+    public HttpParams() {
+        this.init();
+    }
 
-	public void init()
-	{
-		init(4);
-	}
+    public HttpParams(String order) {
+        this.order = order;
+        this.init();
+    }
 
-	public void init(int i)
-	{
-		if(order == SortBy.OrderByAlbet)
-		{
-			urlParams = new TreeMap<String, String>();
-		}
-		else
-		{
-			urlParams = new ConcurrentHashMap<String, String>(8);
-		}
-		// multipart分隔符集合
-		fileWraps = new ConcurrentHashMap<String, FileWrapper>(i);
-	}
+    public HttpParams(int i) {
+        this.init(i);
+    }
 
-	public boolean haveFile()
-	{
-		return (fileWraps.size() != 0);
-	}
+    public void init() {
+        this.init(4);
+    }
 
-	public void put(String key, int value)
-	{
-		put(key, value + "");
-	}
+    public void init(int i) {
+        if ("Default".equals(this.order)) {
+            this.urlParams = new ConcurrentHashMap(8);
+        } else {
+            this.urlParams = new TreeMap();
+        }
 
-	public void put(String key, String value)
-	{
-		if (key != null && value != null)
-		{
-			urlParams.put(key, value);
-		}
-		else
-		{
-			throw new RuntimeException("key or value is NULL");
-		}
-	}
+        this.fileWraps = new ConcurrentHashMap(i);
+    }
 
-	public void put(String key, byte[] file)
-	{
-		put(key, new ByteArrayInputStream(file));
-	}
+    public boolean haveFile() {
+        return this.fileWraps.size() != 0;
+    }
 
-	public void put(String key, File file) throws FileNotFoundException
-	{
-		put(key, new FileInputStream(file), file.getName());
-	}
+    public void put(String key, int value) {
+        this.put(key, String.valueOf(value));
+    }
 
-	public void put(String key, InputStream value)
-	{
-		put(key, value, "fileName");
-	}
+    public void put(String key, String value) {
+        if (key != null && value != null) {
+            this.urlParams.put(key, value);
+        } else {
+            throw new RuntimeException("key or value is NULL");
+        }
+    }
 
-	public void put(String key, InputStream value, String fileName)
-	{
-		if (key != null && value != null)
-		{
-			fileWraps.put(key, new FileWrapper(value, fileName, null));
-		}
-		else
-		{
-			throw new RuntimeException("key or value is NULL");
-		}
+    public void put(String key, byte[] file) {
+        this.put(key, (InputStream) (new ByteArrayInputStream(file)));
+    }
 
-	}
+    public void put(String key, File file) throws FileNotFoundException {
+        this.put(key, new FileInputStream(file), file.getName());
+    }
 
-	public String getStringParams()
-	{
-		StringBuilder result = new StringBuilder();
-		for (Map.Entry<String, String> entry : urlParams.entrySet())
-		{
-			if (result.length() > 0)
-			{
-				result.append("&");
-			}
-			if (fileWraps.size() != 0)
-			{
-				try
-				{
-					result.append(URLEncoder.encode(entry.getKey(), "utf-8"));
-					result.append("=");
-					result.append(URLEncoder.encode(entry.getValue(), "utf-8"));
-				}
-				catch (UnsupportedEncodingException e)
-				{
-					result.append(entry.getKey());
-					result.append("=");
-					result.append(entry.getValue());
-				}
-			}
-			else
-			{
-			}
-		}
-		return result.toString();
-	}
+    public void put(String key, InputStream value) {
+        this.put(key, value, "fileName");
+    }
 
-	public void remove(String key)
-	{
-		urlParams.remove(key);
-		fileWraps.remove(key);
-	}
+    public void put(String key, InputStream value, String fileName) {
+        if (key != null && value != null) {
+            this.fileWraps.put(key, new HttpParams.FileWrapper(value, fileName, (String) null));
+        } else {
+            throw new RuntimeException("key or value is NULL");
+        }
+    }
 
-	// 在get中将参数拼接成 xx=yy&xx=yy&xx=yy
-	@Override
-	public String toString()
-	{
+    public String getStringParams() {
+        StringBuilder result = new StringBuilder();
+        Iterator var3 = this.urlParams.entrySet().iterator();
 
-		StringBuilder result = new StringBuilder();
+        while (var3.hasNext()) {
+            Map.Entry entry = (Map.Entry) var3.next();
+            if (result.length() > 0) {
+                result.append("&");
+            }
 
-		for (Map.Entry<String, String> entry : urlParams.entrySet())
-		{
-			if (result.length() > 0)
-			{
-				result.append("&");
-			}
+            if (this.fileWraps.size() != 0) {
+                try {
+                    result.append(URLEncoder.encode((String) entry.getKey(), "utf-8"));
+                    result.append("=");
+                    result.append(URLEncoder.encode((String) entry.getValue(), "utf-8"));
+                } catch (UnsupportedEncodingException var5) {
+                    result.append((String) entry.getKey());
+                    result.append("=");
+                    result.append((String) entry.getValue());
+                }
+            }
+        }
 
-			try
-			{
-				result.append(URLEncoder.encode(entry.getKey(), "utf-8"));
-				result.append("=");
-				result.append(URLEncoder.encode(entry.getValue(), "utf-8"));
-			}
-			catch (UnsupportedEncodingException e)
-			{
-				result.append(entry.getKey());
-				result.append("=");
-				result.append(entry.getValue());
-			}
-		}
+        return result.toString();
+    }
 
-		return result.toString();
-	}
+    public void remove(String key) {
+        if (this.urlParams.containsKey(key)) {
+            this.urlParams.remove(key);
+        }
 
-	/**
-	* 获取参数集
-	*/
-	public HttpEntity getEntity()
-	{
-		HttpEntity entity = null;
-		if (!fileWraps.isEmpty())
-		{
-			MultipartEntity multipartEntity = new MultipartEntity();
-			for (Map.Entry<String, String> entry : urlParams.entrySet())
-			{
-				multipartEntity.addPart(entry.getKey(), entry.getValue());
-			}
-			int currentIndex = 0;
-			int lastIndex = fileWraps.entrySet().size() - 1;
-			for (ConcurrentHashMap.Entry<String, FileWrapper> entry : fileWraps.entrySet())
-			{
-				FileWrapper file = entry.getValue();
-				if (file.inputStream != null)
-				{
-					boolean isLast = currentIndex == lastIndex;
-					if (file.contentType != null)
-					{
-						multipartEntity.addPart(entry.getKey(), file.fileName, file.inputStream, file.contentType,
-								isLast);
-					}
-					else
-					{
-						multipartEntity.addPart(entry.getKey(), file.fileName, file.inputStream, isLast);
-					}
-				}
-				currentIndex++;
-			}
-			entity = multipartEntity;
-		}
-		else
-		{
-			try
-			{
-				entity = new UrlEncodedFormEntity(getParamsList(), "UTF-8");
-			}
-			catch (UnsupportedEncodingException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		return entity;
-	}
+        if (this.fileWraps.containsKey(key)) {
+            this.fileWraps.remove(key);
+        }
 
-	protected List<BasicNameValuePair> getParamsList()
-	{
-		List<BasicNameValuePair> lparams = new LinkedList<BasicNameValuePair>();
-		for (Map.Entry<String, String> entry : urlParams.entrySet())
-		{
-			lparams.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-		}
-		return lparams;
-	}
+    }
 
-	/**
-	 * 封装一个文件参数
-	 * 
-	 */
-	public static class FileWrapper
-	{
-		public InputStream inputStream;
-		public String fileName;
-		public String contentType;
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        Iterator var3 = this.urlParams.entrySet().iterator();
 
-		public FileWrapper(InputStream inputStream, String fileName, String contentType)
-		{
-			this.inputStream = inputStream;
-			this.contentType = contentType;
-			if (StringUtils.isEmpty(fileName))
-			{
-				this.fileName = "nofilename";
-			}
-			else
-			{
-				this.fileName = fileName;
-			}
-		}
-	}
+        while (var3.hasNext()) {
+            Map.Entry entry = (Map.Entry) var3.next();
+            if (result.length() > 0) {
+                result.append("&");
+            }
+
+            try {
+                result.append(URLEncoder.encode((String) entry.getKey(), "utf-8"));
+                result.append("=");
+                result.append(URLEncoder.encode((String) entry.getValue(), "utf-8"));
+            } catch (UnsupportedEncodingException var5) {
+                result.append((String) entry.getKey());
+                result.append("=");
+                result.append((String) entry.getValue());
+            }
+        }
+
+        return result.toString();
+    }
+
+    public String toJsonString() {
+        Iterator var3 = this.urlParams.entrySet().iterator();
+        JSONObject object = new JSONObject();
+        try {
+            while (var3.hasNext()) {
+                Map.Entry entry = (Map.Entry) var3.next();
+                object.put((String) entry.getKey(), entry.getValue());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return object.toString();
+
+    }
+
+    public Set<Map.Entry<String, String>> entrySet() {
+        return this.urlParams.entrySet();
+    }
+
+    public HttpEntity getEntity() {
+        Object entity = null;
+        if (!this.fileWraps.isEmpty()) {
+            MultipartEntity e = new MultipartEntity();
+            Iterator lastIndex = this.urlParams.entrySet().iterator();
+
+            while (lastIndex.hasNext()) {
+                Map.Entry currentIndex = (Map.Entry) lastIndex.next();
+                e.addPart((String) currentIndex.getKey(), (String) currentIndex.getValue());
+            }
+
+            int var10 = 0;
+            int var11 = this.fileWraps.entrySet().size() - 1;
+
+            for (Iterator var6 = this.fileWraps.entrySet().iterator(); var6.hasNext(); ++var10) {
+                Map.Entry entry = (Map.Entry) var6.next();
+                HttpParams.FileWrapper file = (HttpParams.FileWrapper) entry.getValue();
+                if (file.inputStream != null) {
+                    boolean isLast = var10 == var11;
+                    if (file.contentType != null) {
+                        e.addPart((String) entry.getKey(), file.fileName, file.inputStream, file.contentType, isLast);
+                    } else {
+                        e.addPart((String) entry.getKey(), file.fileName, file.inputStream, isLast);
+                    }
+                }
+            }
+
+            entity = e;
+        } else {
+            try {
+                entity = new UrlEncodedFormEntity(this.getParamsList(), "UTF-8");
+            } catch (UnsupportedEncodingException var9) {
+                var9.printStackTrace();
+            }
+        }
+
+        return (HttpEntity) entity;
+    }
+
+    protected List<BasicNameValuePair> getParamsList() {
+        LinkedList lparams = new LinkedList();
+        Iterator var3 = this.urlParams.entrySet().iterator();
+
+        while (var3.hasNext()) {
+            Map.Entry entry = (Map.Entry) var3.next();
+            lparams.add(new BasicNameValuePair((String) entry.getKey(), (String) entry.getValue()));
+        }
+
+        return lparams;
+    }
+
+    public static class FileWrapper {
+        public InputStream inputStream;
+        public String fileName;
+        public String contentType;
+
+        public FileWrapper(InputStream inputStream, String fileName, String contentType) {
+            this.inputStream = inputStream;
+            this.contentType = contentType;
+            if (StringUtils.isEmpty(fileName)) {
+                this.fileName = "nofilename";
+            } else {
+                this.fileName = fileName;
+            }
+
+        }
+    }
 }
